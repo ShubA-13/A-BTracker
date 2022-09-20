@@ -28,6 +28,7 @@ def response_form(coin, addr, balance):
     }
     return json.dumps(response)
 
+
 def updated_balances(coin, addr, balance):
     response = {
         "message": "balance update",
@@ -79,7 +80,6 @@ def add_user_sub(user_wallet, addr, coin, balance):
         con.commit()
 
 
-
 def check_same_users_subs(user_wallet, addr):
     flag = 0
     con = sqlite3.connect('users.db')
@@ -113,8 +113,11 @@ def get_balance_ETH(addr):
     balance = (int(info['result']) / ETH)
     return balance
 
+
 global new_data
 flag_changes = 0
+
+
 def update_balances(user_wallet):
     con = sqlite3.connect('users.db')
     cur = con.cursor()
@@ -143,11 +146,3 @@ def signal(new_info):
     if len(new_info) > 0:
         flag = 1
     return flag
-
-# def get_data(new_info):
-#     return new_info
-
-# def get_key(d, value):
-#     for k, v in d.items():
-#         if v == value:
-#             return k

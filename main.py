@@ -1,14 +1,11 @@
 import sqlite3
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.responses import HTMLResponse
-import json
+import os
 import funcs
 from typing import List
 import uvicorn
 import asyncio
-import time
-from multiprocessing import Process, Value
-from threading import Thread
 
 app = FastAPI()
 
@@ -55,6 +52,7 @@ html = """
 </html>
 """
 
+
 class ConnectionManager:
     def __init__(self):
         self.active_connections: List[WebSocket] = []
@@ -73,14 +71,16 @@ class ConnectionManager:
         await websocket.send_text(message)
 
 
-
 manager = ConnectionManager()
+
 
 @app.get("/")
 async def get():
     return HTMLResponse(html)
 
+
 d = {}
+
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
@@ -127,17 +127,13 @@ async def get_subs(user_wallet):
         return ('You havn`t got any subscribes')
 
 
-#1Q1s8gGKB1hAbUVc4UTyedLHH9dSs99X9W btc
-#0xeBec795c9c8bBD61FFc14A6662944748F299cAcf eth
-
-
-
-
-
+# 1Q1s8gGKB1hAbUVc4UTyedLHH9dSs99X9W btc
+# 0xeBec795c9c8bBD61FFc14A6662944748F299cAcf eth
 
 
 if __name__ == '__main__':
+    if not os.path.isfile('users.db'):
+        file = open('users.db', 'w')
+        file.close()
+
     uvicorn.run('main:app', port=8000, log_level='info')
-
-
-
