@@ -2,7 +2,7 @@ import json
 import requests
 import sqlite3
 import codecs
-from main import ConnectionManager
+from main import ConnectionManager, d
 
 manager = ConnectionManager()
 
@@ -132,7 +132,7 @@ def update_balances(user_wallet):
                             (new_balance, row[0]))
                 con.commit()
                 new_info.append(updated_balances(row[1], row[0], new_balance))
-                print("updated balance", updated_balances(row[1], row[0], new_balance))
+                print("updated balance", response_form(row[1], row[0], new_balance))
         flag_changes = signal(new_info)
         if flag_changes == 1:
             return new_info
@@ -146,34 +146,3 @@ def signal(new_info):
     if len(new_info) > 0:
         flag = 1
     return flag
-
-
-def up_reggister(coin: str):
-    return coin.upper()
-
-
-def show_all_subs(user_wallet):
-    new_info = update_balances(user_wallet)
-    con = sqlite3.connect('users.db')
-    cur = con.cursor()
-    recs = cur.execute("SELECT * FROM " + quote_identifier(user_wallet))
-    subs = recs.fetchall()
-    all_subs = []
-    for sub in subs:
-        all_subs.append(response_form_subs(sub[1], sub[0], sub[2]))
-    print(all_subs)
-    return all_subs
-
-
-def response_form_subs(coin, addr, balance):
-    response = {
-        "message": "your subscription",
-        "data": [
-            {
-                "Name": coin,
-                "Address": addr,
-                "Balance": balance
-            }
-        ]
-    }
-    return json.dumps(response)
