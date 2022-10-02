@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WalletTracker</title>
+</head>
+<body>
+<h1>Wallet Tracker</h1>
+<form action="" onsubmit="sendMessage(event)">
+    <label>Your wallet</label>
+    <input type="text" id="messageText1" autocomplete="off"/><br><br>
+    <label>Wallet to subscribe</label>
+    <input type="text" id="messageText2" autocomplete="off"/><br><br>
+    <label1>Coin</label1>
+    <input type="text" id="messageText3" autocomplete="off"/><br><br>
+    <button>Send</button>
+</form>
+<ul id='messages'>
+</ul>
+<script>
+    var socket = new WebSocket("ws://localhost:5000/ws");
+
+    socket.onopen = function (e) {
+        console.log('Соединение с сервером установлено');
+    };
+
+    socket.onmessage = function (event) {
+        var messages = document.getElementById('messages')
+        var message = document.createElement('li')
+        var content = document.createTextNode(event.data)
+        message.appendChild(content)
+        messages.appendChild(message)
+    };
+
+    function sendMessage(event) {
+        var input1 = document.getElementById("messageText1")
+        var input2 = document.getElementById("messageText2")
+        var input3 = document.getElementById("messageText3")
+        socket.send(input1.value + " " + input2.value + " " + input3.value)
+        input1.value = ''
+        input2.value = ''
+        input3.value = ''
+        event.preventDefault()
+    }
+</script>
+</body>
+</html>
