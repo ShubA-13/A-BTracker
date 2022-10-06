@@ -20,7 +20,7 @@
     var socket = new WebSocket("ws://localhost:5000/ws");
 
     socket.onopen = function (e) {
-        console.log('Соединение с сервером установлено');
+        console.log('Connected successfully');
     };
 
     socket.onmessage = function (event) {
